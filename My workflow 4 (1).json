@@ -1,0 +1,314 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "30062271-5d6b-49e0-9115-6361304f8932",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fb19e193-fcc0-4a96-ae87-a848f42fb2c5",
+      "name": "Webhook",
+      "webhookId": "30062271-5d6b-49e0-9115-6361304f8932"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a sentiment analysis assistant.\nYour task is to analyze customer feedback and determine if it is positive or negative.\nRespond with only one word: Positive or Negative.\n\nFeedback: {{ $json.body.data.fields[4].value }}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        0
+      ],
+      "id": "7aa63936-fa85-49ea-a5cc-10ef2646580d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        208
+      ],
+      "id": "c50c5d51-807d-49fb-beaa-395c0aa7f426",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "9DyJEtTZ77nWXy07",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1gr9TVZeVxkF0WIYPT1apJwS7hskAuko9W_91YjA-Lkk",
+          "mode": "list",
+          "cachedResultName": "feedback project",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gr9TVZeVxkF0WIYPT1apJwS7hskAuko9W_91YjA-Lkk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "الورقة1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1gr9TVZeVxkF0WIYPT1apJwS7hskAuko9W_91YjA-Lkk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "analyzes sentiment": "={{ $json.output }}",
+            "country": "={{ $('Webhook').item.json.body.data.fields[2].value }}",
+            "rating": "={{ $('Webhook').item.json.body.data.fields[3].value }}",
+            "email": "={{ $('Webhook').item.json.body.data.fields[1].value }}",
+            "full name": "={{ $('Webhook').item.json.body.data.fields[0].value }}"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "full name",
+              "displayName": "full name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rating",
+              "displayName": "rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "analyzes sentiment",
+              "displayName": "analyzes sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        528,
+        0
+      ],
+      "id": "2d91ad82-66dd-4357-a95a-c0971f546fa6",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "DMvDBlUQvf3HTSPz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Webhook').item.json.body.data.fields[1].value }}",
+        "subject": "obou bour product",
+        "emailType": "text",
+        "message": "=hell dear {{ $('Webhook').item.json.body.data.fields[0].value }} \nWe're sorry to hear your experience wasn't perfect.\nYour feedback is very important, and we’ll work on improving.\nThank you for helping us grow.\n– Bassam Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        -64
+      ],
+      "id": "9e777880-de8e-4fdb-88b9-3c5fa4e6838b",
+      "name": "Send a message",
+      "webhookId": "73a3a196-7bdd-4bb6-9e67-a7fddb27c4a5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "C1G5QD9sopeX3rQ9",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "766f6070-68c5-4f02-b498-daccd7a71eab",
+              "leftValue": "={{ $json['analyzes sentiment'] }}",
+              "rightValue": "negative",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        0
+      ],
+      "id": "47ed850c-6f0f-4976-8e24-526eeb88ab02",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Webhook').item.json.body.data.fields[1].value }}",
+        "subject": "obou bour product",
+        "emailType": "text",
+        "message": "=hell dear {{ $('Webhook').item.json.body.data.fields[0].value }} \nWe're so happy to hear that you loved our product!\nYour support motivates us to keep improving.\nBest regards,\nBassam Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        928,
+        160
+      ],
+      "id": "0a25623a-a369-4474-b879-3e1919519f51",
+      "name": "Send a message1",
+      "webhookId": "73a3a196-7bdd-4bb6-9e67-a7fddb27c4a5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "gjCD2v3RMEW5HfpY",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "01b8e409-a4c5-4e76-86a1-f5f785a8fac2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1cc34882b8f7f22daf03b4f2b9cc682f2453858e1acbf0137157b6c2ccbb3633"
+  },
+  "id": "p00EBO9mk1Ga4R3Z",
+  "tags": []
+}
