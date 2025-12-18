@@ -1,66 +1,61 @@
-# 💬 Simple Project - n8n Sentiment Analysis Workflow
+imple Project - n8n + Python Feedback Analysis
 
-An **n8n workflow** that collects customer feedback via **Webhook**, analyzes the **sentiment** (Positive or Negative) using **OpenAI**, saves the results to **Google Sheets**, and automatically sends emails based on the analysis.
+A full feedback automation and analysis project combining n8n workflow automation and Python data analysis. This project collects customer feedback via a webhook, analyzes sentiment using OpenAI, stores results in Google Sheets, and provides detailed statistics and visualizations.
 
----
+🚀 Features
 
-## 🚀 Features
+Collects customer feedback through a webhook form
 
-- Collects customer feedback through a webhook form  
-- Analyzes how the customer feels using **OpenAI sentiment analysis**  
-- Saves results (name, email, country, rating, sentiment) to **Google Sheets**  
-- Sends a personalized email:
-  - 😊 Positive → “Thank you for your kind feedback!”
-  - 😞 Negative → “We’re sorry and will work to improve.”
+Analyzes sentiment (Positive / Negative) using OpenAI
 
----
+Stores feedback data (name, email, country, rating, sentiment) in Google Sheets
 
-## 🧠 Workflow Structure
+Sends personalized email responses:
 
-1. **Webhook** — Receives the feedback form submission  
-2. **OpenAI Node** — Determines the sentiment (Positive / Negative)  
-3. **Google Sheets** — Saves the feedback and sentiment  
-4. **Gmail Node (optional)** — Sends automatic response emails  
+😊 Positive → "Thank you for your kind feedback!"
 
----
+😞 Negative → "We’re sorry and will work to improve."
 
-## 🧩 Tools Used
+Performs Python-based analysis to:
 
-- [n8n](https://n8n.io/) — Automation platform  
-- [OpenAI](https://platform.openai.com/) — Sentiment analysis  
-- [Google Sheets](https://www.google.com/sheets/about/) — Data storage  
-- [Gmail API](https://developers.google.com/gmail/api) — Email sending  
+Show sentiment distribution
 
----
+Calculate ratings statistics (average, min, max, standard deviation)
 
-## 📸 Example Workflow (screenshot)
+Generate PDF charts for reporting
 
-![n8n workflow](./workflow-example.png)
+🧠 Workflow Structure
 
-*(Optional — Add an exported image of your workflow here)*
+Webhook Node — Receives feedback submission
 
----
+OpenAI Node — Determines sentiment (Positive / Negative)
 
-## 🗂️ How to Use
+Google Sheets Node — Saves feedback and sentiment
 
-1. Import the file `sentiment-feedback.json` into your n8n instance  
-2. Set up your credentials for:
-   - Google Sheets  
-   - OpenAI  
-   - Gmail (optional)
-3. Deploy the workflow  
-4. Send feedback through your webhook URL  
-5. Check the results in your Google Sheet  
+Gmail Node (optional) — Sends automated emails
 
----
+Python Analysis — Pulls Google Sheet data and generates statistics & visualizations
 
-## 👤 Author
+🛠 Tools Used
 
-**Bassam Bourourou**  
-🌐 [LinkedIn](https://www.linkedin.com/in/bessam-bourourou-9291b3295/)  
-💻 [GitHub](https://github.com/bassambour)
+n8n — Workflow automation
 
----
+OpenAI — Sentiment analysis
 
-## 🏷️ License
-This project is open-source under the **MIT License**.
+Google Sheets — Feedback storage
+
+Gmail API — Email notifications
+
+Python (Pandas + Matplotlib) — Data analysis & visualization
+
+🗂️ How to Use
+
+Import the workflow JSON (sentiment-feedback.json) into n8n
+
+Configure credentials for Google Sheets, OpenAI, and Gmail (optional)
+
+Deploy the workflow
+
+Submit feedback via the webhook URL
+
+Run the Python analysis script to view statistics and generate charts
